@@ -1,0 +1,1285 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📃Por meu Camarada📃</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* RESET E ESTILOS GERAIS */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+        
+        /* ESTILOS DAS PÁGINAS */
+        .pagina {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+        }
+        
+        .pagina.ativa {
+            display: block;
+        }
+        
+        /* BOTÃO FLUTUANTE */
+        .botao-flutuante {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: #2c3e50;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .botao-flutuante:hover {
+            background: #34495e;
+            transform: scale(1.05);
+        }
+        
+        /* PÁGINA 1 - CARREGAMENTO */
+        #pagina1 {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        .imagem-fundo {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 1;
+        }
+        
+        .barra-carga-container {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 60px);
+            max-width: 600px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 10px;
+            padding: 20px;
+            z-index: 2;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .barra-carga {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+        
+        .progresso-carga {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #3498db, #2ecc71);
+            border-radius: 4px;
+            transition: width 3s linear;
+        }
+        
+        .texto-carga {
+            color: white;
+            text-align: center;
+            font-size: 16px;
+            font-weight: 500;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+        }
+        
+        /* PÁGINA 2 - SENHA */
+        #pagina2 {
+            background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .notificacao {
+            position: absolute;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            border-radius: 10px;
+            padding: 15px 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            animation: aparecer 1s ease-out;
+            border-left: 4px solid #3498db;
+            max-width: 90%;
+            z-index: 10;
+        }
+        
+        .notificacao i {
+            color: #3498db;
+            font-size: 20px;
+        }
+        
+        .notificacao p {
+            font-size: 16px;
+            color: #333;
+        }
+        
+        @keyframes aparecer {
+            0% { top: -100px; opacity: 0; }
+            100% { top: 30px; opacity: 1; }
+        }
+        
+        .card-senha {
+            background: white;
+            border-radius: 15px;
+            padding: 40px 30px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            border: 1px solid #e0e0e0;
+            margin-top: 80px;
+        }
+        
+        .card-senha h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .mensagem-borda {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 20px 0;
+            color: #495057;
+            font-size: 16px;
+            font-style: italic;
+        }
+        
+        .input-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin: 25px 0;
+        }
+        
+        #senhaInput {
+            padding: 15px 20px;
+            border: 2px solid #ced4da;
+            border-radius: 10px;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s;
+        }
+        
+        #senhaInput:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+        
+        .input-container button {
+            padding: 15px 25px;
+            background: #3498db;
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.3s;
+        }
+        
+        .input-container button:hover {
+            background: #2980b9;
+        }
+        
+        .confianca-container {
+            margin: 25px 0;
+            text-align: left;
+        }
+        
+        .confianca-container p {
+            margin-bottom: 10px;
+            font-weight: 500;
+            color: #495057;
+        }
+        
+        .barra-confianca {
+            height: 6px;
+            background: #e9ecef;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        
+        #barraConfianca {
+            height: 100%;
+            width: 0%;
+            background: #ddd;
+            border-radius: 3px;
+            transition: width 0.5s, background 0.5s;
+        }
+        
+        .aviso {
+            background: #fff3cd;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 25px;
+            color: #856404;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            border: 1px solid #ffeaa7;
+        }
+        
+        /* ESTILOS PARA SENHA */
+        .senha-correta {
+            border-color: #27ae60 !important;
+            background-color: rgba(39, 174, 96, 0.05) !important;
+        }
+        
+        .senha-incorreta {
+            border-color: #e74c3c !important;
+            background-color: rgba(231, 76, 60, 0.05) !important;
+        }
+        
+        /* PÁGINA 3 - POEMAS */
+        #pagina3 {
+            background: linear-gradient(135deg, #1a2980 0%, #26d0ce 100%);
+            color: white;
+            overflow-y: auto;
+        }
+        
+        .menu-hamburguer {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            cursor: pointer;
+            z-index: 50;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .menu-hamburguer span {
+            width: 20px;
+            height: 2px;
+            background: white;
+            border-radius: 1px;
+        }
+        
+        .menu-aberto {
+            position: fixed;
+            top: 80px;
+            left: 20px;
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            width: 280px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+            display: none;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .menu-aberto button {
+            padding: 12px 15px;
+            border: none;
+            border-radius: 8px;
+            background: #3498db;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s;
+        }
+        
+        .menu-aberto button:hover {
+            background: #2980b9;
+        }
+        
+        .container-poemas {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 80px 20px 100px;
+        }
+        
+        .titulo-pagina {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .titulo-pagina h1 {
+            font-size: 32px;
+            margin-bottom: 15px;
+        }
+        
+        .titulo-pagina p {
+            font-size: 18px;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        
+        .lista-poemas {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 60px;
+        }
+        
+        .cartao-poema {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+            border-radius: 12px;
+            padding: 25px;
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s;
+        }
+        
+        .cartao-poema:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .cartao-poema h3 {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: #f1c40f;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .cartao-poema p {
+            opacity: 0.9;
+            line-height: 1.6;
+            font-size: 15px;
+        }
+        
+        /* PÁGINAS DE POEMAS INDIVIDUAIS */
+        .pagina-poema {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #2c3e50;
+            z-index: 150;
+            overflow-y: auto;
+            padding: 40px 20px;
+            color: white;
+            display: none;
+        }
+        
+        .pagina-poema.ativa {
+            display: block;
+        }
+        
+        .conteudo-poema {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 40px 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .cabecalho-poema {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .cabecalho-poema h2 {
+            font-size: 28px;
+            color: #f1c40f;
+            margin-bottom: 15px;
+        }
+        
+        .texto-poema {
+            font-size: 18px;
+            line-height: 1.8;
+            text-align: justify;
+        }
+        
+        .texto-poema p {
+            margin-bottom: 20px;
+        }
+        
+        .botao-voltar-poema {
+            margin-top: 30px;
+            padding: 12px 25px;
+            background: #3498db;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        /* MODAL SEGREDO */
+        .modal-segredo {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 200;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-conteudo {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+        }
+        
+        .modal-conteudo h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        
+        .modal-conteudo input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            margin: 15px 0;
+        }
+        
+        .modal-conteudo button {
+            padding: 12px 25px;
+            background: #3498db;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+            margin: 5px;
+        }
+        
+        /* PÁGINA SECRETA */
+        #paginaSecreta {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #8E2DE2 0%, #4A00E0 100%);
+            z-index: 200;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+        }
+        
+        .conteudo-secreto {
+            max-width: 500px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .conteudo-secreto h2 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: #f1c40f;
+        }
+        
+        .conteudo-secreto p {
+            font-size: 20px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        
+        /* MENSAGENS TEMPORÁRIAS */
+        .mensagem-temporaria {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 12px 20px;
+            border-radius: 8px;
+            color: white;
+            z-index: 10000;
+            animation: slideIn 0.3s ease;
+            max-width: 300px;
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        /* RESPONSIVIDADE */
+        @media (max-width: 768px) {
+            .lista-poemas {
+                grid-template-columns: 1fr;
+            }
+            
+            .titulo-pagina h1 {
+                font-size: 26px;
+            }
+            
+            .card-senha {
+                padding: 30px 20px;
+                margin-top: 120px;
+            }
+            
+            .menu-aberto {
+                width: calc(100% - 40px);
+                left: 20px;
+            }
+            
+            .conteudo-poema {
+                padding: 30px 20px;
+            }
+            
+            .texto-poema {
+                font-size: 16px;
+            }
+            
+            .barra-carga-container {
+                width: calc(100% - 40px);
+                bottom: 30px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .botao-flutuante {
+                width: 50px;
+                height: 50px;
+                bottom: 20px;
+                right: 20px;
+                font-size: 20px;
+            }
+            
+            .barra-carga-container {
+                padding: 15px;
+            }
+            
+            .notificacao {
+                padding: 12px 20px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- PÁGINA 1 - CARREGAMENTO -->
+    <div id="pagina1" class="pagina ativa">
+        <img src="https://i.postimg.cc/fLnVz8V9/94345ad561d6526741a1681eee0b1bc5.jpg" 
+             alt="Fundo especial" class="imagem-fundo">
+        
+        <div class="barra-carga-container">
+            <div class="barra-carga">
+                <div class="progresso-carga" id="progresso"></div>
+            </div>
+            <p class="texto-carga">Carregando o mundo do Lord Iny...</p>
+        </div>
+    </div>
+    
+    <!-- PÁGINA 2 - SENHA -->
+    <div id="pagina2" class="pagina">
+        <div class="notificacao">
+            <i class="fas fa-key"></i>
+            <p>Digite a senha secreta para continuar</p>
+        </div>
+        
+        <div class="card-senha">
+            <h2><i class="fas fa-crown"></i> O Lord Iny pede:</h2>
+            <p class="mensagem-borda">"Por favor, digite a senha para acessar o conteúdo especial"</p>
+            
+            <div class="input-container">
+                <input type="password" id="senhaInput" placeholder="Digite a senha secreta...">
+                <button id="verificarSenhaBtn">
+                    <i class="fas fa-key"></i> Verificar Senha
+                </button>
+            </div>
+            
+            <div class="confianca-container">
+                <p>Confiança da senha: <span id="nivelConfianca">---</span></p>
+                <div class="barra-confianca">
+                    <div id="barraConfianca"></div>
+                </div>
+            </div>
+            
+            <p class="aviso">
+                <i class="fas fa-shield-alt"></i> Espaço restrito para usuários aprovados. Tentativas ilimitadas.
+            </p>
+        </div>
+    </div>
+    
+    <!-- PÁGINA 3 - POEMAS -->
+    <div id="pagina3" class="pagina">
+        <div class="menu-hamburguer" id="menuBtn">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        
+        <div class="menu-aberto" id="menuAberto">
+            <button id="whatsappBtn">
+                <i class="fab fa-whatsapp"></i> WhatsApp: 85 656 2554
+            </button>
+            <button id="emailBtn">
+                <i class="fas fa-envelope"></i> Email: inygujamo87@gmail.com
+            </button>
+            <button id="segredoBtn">
+                <i class="fas fa-user-secret"></i> Área Secreta
+            </button>
+        </div>
+        
+        <div class="container-poemas">
+            <div class="titulo-pagina">
+                <h1><i class="fas fa-book"></i> Poemas Militares</h1>
+                <p>Uma coleção especial dedicada aos bravos heróis que protegem nossa nação</p>
+            </div>
+            
+            <div class="lista-poemas" id="listaPoemas">
+                <!-- Poemas serão inseridos via JavaScript -->
+            </div>
+        </div>
+    </div>
+    
+    <!-- PÁGINAS DE POEMAS INDIVIDUAIS -->
+    <div id="paginaPoema1" class="pagina-poema">
+        <div class="conteudo-poema">
+            <div class="cabecalho-poema">
+                <h2><i class="fas fa-shield-alt"></i> O Chamado do Dever</h2>
+                <p>Uma homenagem ao compromisso inabalável dos militares</p>
+            </div>
+            <div class="texto-poema">
+                <p>Quando o clarim ecoa no alvorecer,<br>
+                E a pátria chama, devemos atender.<br>
+                Dever acima de tudo, lealdade sem fim,<br>
+                Protegendo nossa terra, cumprindo o seu fim.</p>
+                
+                <p>Nas fileiras cerradas, ombro a ombro a marchar,<br>
+                Com disciplina e honra, jamais vacilar.<br>
+                O uniforme pesa, mas a alma é leve,<br>
+                Pois por ideais maiores, a vida se tece.</p>
+                
+                <p>Nas fronteiras distantes, sob o céu estrelado,<br>
+                O soldado vigia, sempre preparado.<br>
+                No silêncio da noite, na claridade do dia,<br>
+                A missão se renova, com energia e porfia.</p>
+                
+                <p>Não são feitos de aço, nem possuem superpoder,<br>
+                Mas têm coragem que transborda a temer.<br>
+                São pais, são filhos, são irmãos de todos nós,<br>
+                Guardiões da liberdade, em tempos de dor ou de voz.</p>
+            </div>
+            <button class="botao-voltar-poema" onclick="fecharPoema()">
+                <i class="fas fa-arrow-left"></i> Voltar aos poemas
+            </button>
+        </div>
+    </div>
+    
+    <div id="paginaPoema2" class="pagina-poema">
+        <div class="conteudo-poema">
+            <div class="cabecalho-poema">
+                <h2><i class="fas fa-flag"></i> Juramento à Bandeira</h2>
+                <p>A solenidade do compromisso com a nação</p>
+            </div>
+            <div class="texto-poema">
+                <p>Sob o mastro erguido, frente ao pavilhão,<br>
+                Ecoa o juramento com firme coração.<br>
+                Mãos direitas estendidas, olhares sérios e fiéis,<br>
+                Prometendo defender a pátria, custe o que custar a seus véus.</p>
+                
+                <p>A bandeira ondulando, verde, amarelo, azul e branco,<br>
+                Simboliza o Brasil, em cada lance e cada flanco.<br>
+                "Defender com honra, lealdade e com vigor"<br>
+                É o voto que fazem, com profundo fervor.</p>
+                
+                <p>Não são apenas palavras, ritos de passagem,<br>
+                São promessas seladas, na coragem e na linguagem.<br>
+                De dar a vida se preciso, pela terra que os viu nascer,<br>
+                Pelo povo que protegem, sem nunca se esquecer.</p>
+                
+                <p>Cada estrela no céu azul, cada faixa e cada cor,<br>
+                Representam valores que vão além do valor.<br>
+                Ordem e Progresso, lema que guia a ação,<br>
+                De cada militar, em sua missão.</p>
+            </div>
+            <button class="botao-voltar-poema" onclick="fecharPoema()">
+                <i class="fas fa-arrow-left"></i> Voltar aos poemas
+            </button>
+        </div>
+    </div>
+    
+    <div id="paginaPoema3" class="pagina-poema">
+        <div class="conteudo-poema">
+            <div class="cabecalho-poema">
+                <h2><i class="fas fa-medal"></i> O Valor do Soldado</h2>
+                <p>Uma reflexão sobre a bravura e o caráter militar</p>
+            </div>
+            <div class="texto-poema">
+                <p>Não se mede um soldado pela altura que tem,<br>
+                Nem pelos seus méritos, que muitos sustentam também.<br>
+                Mede-se pela coragem que demonstra no agir,<br>
+                E pela fé inabalável, em nunca desistir.</p>
+                
+                <p>O valor do soldado está na disciplina firme,<br>
+                Na capacidade de seguir, mesmo quando o horizonte é termo.<br>
+                Está no sacrifício silencioso, na renúncia pessoal,<br>
+                Em colocar a missão acima do seu ideal.</p>
+                
+                <p>Está na lealdade aos companheiros de farda,<br>
+                Na irmandade que se forma, na mais dura jornada.<br>
+                Pois no campo de batalha, ou no quartel a treinar,<br>
+                São os irmãos de armas que devem se apoiar.</p>
+                
+                <p>O valor se revela nas madrugadas frias,<br>
+                Nas vigílias cansativas, nas longas teofanias.<br>
+                Na paciência com que espera, na prontidão constante,<br>
+                No espírito que persiste, sendo sempre vibrante.</p>
+            </div>
+            <button class="botao-voltar-poema" onclick="fecharPoema()">
+                <i class="fas fa-arrow-left"></i> Voltar aos poemas
+            </button>
+        </div>
+    </div>
+    
+    <div id="paginaPoema4" class="pagina-poema">
+        <div class="conteudo-poema">
+            <div class="cabecalho-poema">
+                <h2><i class="fas fa-handshake"></i> Irmandade de Armas</h2>
+                <p>O vínculo inquebrável entre companheiros de farda</p>
+            </div>
+            <div class="texto-poema">
+                <p>Há um laço que se forma, mais forte que o aço,<br>
+                Entre aqueles que compartilham o mesmo espaço.<br>
+                Não é de sangue, nem família, nem antiga amizade,<br>
+                Mas de missão compartilhada, e de igual vontade.</p>
+                
+                <p>Irmandade de armas, assim se chama esse elo,<br>
+                Que une corações, formando um modelo.<br>
+                Nasceu no quartel, cresceu no campo de instrução,<br>
+                Fortaleceu-se nas missões, com cada lição.</p>
+                
+                <p>São irmãos que se escolhem nas fileiras da vida,<br>
+                Companheiros de jornada, na estrada compartida.<br>
+                Sabem que podem contar, um com o outro sempre,<br>
+                Em qualquer situação, por mais difícil que entre.</p>
+                
+                <p>No olhar silencioso, na palavra não dita,<br>
+                Há um entendimento que a alma descreta.<br>
+                Sabem quando há cansaço, quando há medo ou dor,<br>
+                E se apoiam mutuamente, com calor e valor.</p>
+            </div>
+            <button class="botao-voltar-poema" onclick="fecharPoema()">
+                <i class="fas fa-arrow-left"></i> Voltar aos poemas
+            </button>
+        </div>
+    </div>
+    
+    <div id="paginaPoema5" class="pagina-poema">
+        <div class="conteudo-poema">
+            <div class="cabecalho-poema">
+                <h2><i class="fas fa-eye"></i> Vigília Eterna</h2>
+                <p>A dedicação incansável dos que guardam nossa paz</p>
+            </div>
+            <div class="texto-poema">
+                <p>Enquanto a cidade dorme em seu leito tranquilo,<br>
+                Há olhos que vigiam, com preciso estilo.<br>
+                Nas fronteiras distantes, nos mares profundos,<br>
+                Nos ares celestiais, em todos os mundos.</p>
+                
+                <p>São sentinelas da pátria, guardiões da nação,<br>
+                Que mantêm a vigília, com atenção.<br>
+                Não conhecem o descanso, não admitem falha,<br>
+                Pois sabem que da vigilância, depende a batalha.</p>
+                
+                <p>Nas torres de observação, nos radares que giram,<br>
+                Nas patrulhas noturnas, que o sono não admira.<br>
+                Estão sempre alertas, prontos para agir,<br>
+                Para proteger o país, e seu povo seguir.</p>
+                
+                <p>A vigília é eterna, não tem hora para acabar,<br>
+                É um compromisso sagrado, que devem honrar.<br>
+                Dia após dia, noite após noite,<br>
+                Mantêm-se firmes, em qualquer derrota.</p>
+            </div>
+            <button class="botao-voltar-poema" onclick="fecharPoema()">
+                <i class="fas fa-arrow-left"></i> Voltar aos poemas
+            </button>
+        </div>
+    </div>
+    
+    <div id="paginaPoema6" class="pagina-poema">
+        <div class="conteudo-poema">
+            <div class="cabecalho-poema">
+                <h2><i class="fas fa-peace"></i> Paz Armada</h2>
+                <p>O paradoxo de se preparar para a guerra para manter a paz</p>
+            </div>
+            <div class="texto-poema">
+                <p>Paradoxo aparente, contradição na essência,<br>
+                Preparar-se para a guerra, é dar à paz potência.<br>
+                Pois só quem está pronto, para o conflito enfrentar,<br>
+                Pode verdadeiramente, a paz negociar.</p>
+                
+                <p>Paz armada se chama, esse delicado estado,<br>
+                Onde forças se equilibram, cuidadosamente armado.<br>
+                Não é belicismo, nem desejo de conflito,<br>
+                É prudência estratégica, em seu perfeito dito.</p>
+                
+                <p>O militar entende, melhor que qualquer um,<br>
+                O valor imensurável, que a paz traz ao comum.<br>
+                Por isso se prepara, com tanto empenho e vigor,<br>
+                Para que nunca precise, usar seu grande valor.</p>
+                
+                <p>Treina horas infinitas, suja a farda de suor,<br>
+                Para que o dia do combate, nunca tenha favor.<br>
+                Pois sabe que sua preparação, sua prontidão constante,<br>
+                É o que mantém inimigos, longe do nosso antes.</p>
+            </div>
+            <button class="botao-voltar-poema" onclick="fecharPoema()">
+                <i class="fas fa-arrow-left"></i> Voltar aos poemas
+            </button>
+        </div>
+    </div>
+    
+    <!-- MODAL SEGREDO -->
+    <div class="modal-segredo" id="modalSegredo">
+        <div class="modal-conteudo">
+            <h3><i class="fas fa-lock"></i> Área Secreta</h3>
+            <p>Digite a senha para acessar:</p>
+            <input type="password" id="senhaSegredo" placeholder="Senha secreta...">
+            <div style="margin-top: 20px;">
+                <button id="verificarSegredoBtn">Verificar</button>
+                <button onclick="fecharModalSegredo()" style="background: #95a5a6;">Cancelar</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- PÁGINA SECRETA -->
+    <div id="paginaSecreta">
+        <div class="conteudo-secreto">
+            <h2><i class="fas fa-heart"></i> Segredo Revelado</h2>
+            <p>O nome da nossa Namorada é <strong style="color: #f1c40f;">Lorel</strong></p>
+            <p>Ela gosta muito de música! <i class="fas fa-music"></i></p>
+            <button onclick="fecharPaginaSecreta()" style="margin-top: 20px; padding: 10px 20px; background: #e74c3c; border: none; border-radius: 8px; color: white; cursor: pointer;">
+                <i class="fas fa-lock"></i> Fechar
+            </button>
+        </div>
+    </div>
+    
+    <!-- BOTÃO FLUTUANTE -->
+    <button class="botao-flutuante" id="botaoNavegacao">
+        <i class="fas fa-arrow-right"></i>
+    </button>
+
+    <script>
+        // SISTEMA DE PÁGINAS
+        let paginaAtual = 1;
+        let senhaCorretaDigitada = false;
+        let tentativasSenha = 0;
+        
+        // DADOS DOS POEMAS
+        const poemas = [
+            { 
+                id: 1, 
+                titulo: "O Chamado do Dever", 
+                icone: "fa-shield-alt", 
+                descricao: "Uma homenagem ao compromisso inabalável dos militares" 
+            },
+            { 
+                id: 2, 
+                titulo: "Juramento à Bandeira", 
+                icone: "fa-flag", 
+                descricao: "A solenidade do compromisso com a nação" 
+            },
+            { 
+                id: 3, 
+                titulo: "O Valor do Soldado", 
+                icone: "fa-medal", 
+                descricao: "Uma reflexão sobre a bravura e o caráter militar" 
+            },
+            { 
+                id: 4, 
+                titulo: "Irmandade de Armas", 
+                icone: "fa-handshake", 
+                descricao: "O vínculo inquebrável entre companheiros de farda" 
+            },
+            { 
+                id: 5, 
+                titulo: "Vigília Eterna", 
+                icone: "fa-eye", 
+                descricao: "A dedicação incansável dos que guardam nossa paz" 
+            },
+            { 
+                id: 6, 
+                titulo: "Paz Armada", 
+                icone: "fa-peace", 
+                descricao: "O paradoxo de se preparar para a guerra para manter a paz" 
+            }
+        ];
+        
+        // INICIALIZAÇÃO
+        document.addEventListener('DOMContentLoaded', function() {
+            iniciarSite();
+            configurarEventos();
+        });
+        
+        function iniciarSite() {
+            // Iniciar barra de carregamento
+            const progresso = document.getElementById('progresso');
+            progresso.style.width = '100%';
+            
+            // Mostrar botão de navegação após 1 segundo
+            setTimeout(() => {
+                atualizarBotaoNavegacao();
+            }, 1000);
+            
+            // Ir para página 2 após 3 segundos
+            setTimeout(() => {
+                mostrarPagina(2);
+            }, 3000);
+            
+            // Preencher lista de poemas
+            preencherPoemas();
+        }
+        
+        function mostrarPagina(numero) {
+            // Esconder todas as páginas
+            document.querySelectorAll('.pagina').forEach(p => {
+                p.classList.remove('ativa');
+            });
+            document.querySelectorAll('.pagina-poema').forEach(p => {
+                p.classList.remove('ativa');
+            });
+            document.getElementById('paginaSecreta').style.display = 'none';
+            document.getElementById('modalSegredo').style.display = 'none';
+            document.getElementById('menuAberto').style.display = 'none';
+            
+            // Mostrar página solicitada
+            if (numero >= 1 && numero <= 3) {
+                document.getElementById(`pagina${numero}`).classList.add('ativa');
+                paginaAtual = numero;
+                atualizarBotaoNavegacao();
+            }
+        }
+        
+        function atualizarBotaoNavegacao() {
+            const botao = document.getElementById('botaoNavegacao');
+            const icone = botao.querySelector('i');
+            
+            // Mostrar botão em todas as páginas
+            botao.style.display = 'flex';
+            
+            switch(paginaAtual) {
+                case 1:
+                    icone.className = 'fas fa-arrow-right';
+                    botao.onclick = () => mostrarPagina(2);
+                    break;
+                case 2:
+                    icone.className = 'fas fa-arrow-left';
+                    botao.onclick = () => mostrarPagina(1);
+                    break;
+                case 3:
+                    icone.className = 'fas fa-arrow-left';
+                    botao.onclick = () => mostrarPagina(2);
+                    break;
+            }
+        }
+        
+        function preencherPoemas() {
+            const lista = document.getElementById('listaPoemas');
+            lista.innerHTML = '';
+            
+            poemas.forEach(poema => {
+                const cartao = document.createElement('div');
+                cartao.className = 'cartao-poema';
+                cartao.onclick = () => mostrarPoema(poema.id);
+                
+                cartao.innerHTML = `
+                    <h3><i class="fas ${poema.icone}"></i> ${poema.titulo}</h3>
+                    <p>${poema.descricao}</p>
+                    <p style="margin-top: 10px; font-size: 14px; opacity: 0.7;">
+                        <i class="fas fa-book-open"></i> Clique para ler o poema completo
+                    </p>
+                `;
+                
+                lista.appendChild(cartao);
+            });
+        }
+        
+        function mostrarPoema(id) {
+            // Esconder página atual
+            document.getElementById(`pagina${paginaAtual}`).classList.remove('ativa');
+            
+            // Mostrar poema
+            document.getElementById(`paginaPoema${id}`).classList.add('ativa');
+            
+            // Esconder botão de navegação nos poemas
+            document.getElementById('botaoNavegacao').style.display = 'none';
+        }
+        
+        function fecharPoema() {
+            // Esconder todos os poemas
+            document.querySelectorAll('.pagina-poema').forEach(p => {
+                p.classList.remove('ativa');
+            });
+            
+            // Mostrar página 3 novamente
+            document.getElementById('pagina3').classList.add('ativa');
+            paginaAtual = 3;
+            
+            // Mostrar botão de navegação
+            atualizarBotaoNavegacao();
+        }
+        
+        function configurarEventos() {
+            // Verificar senha
+            document.getElementById('verificarSenhaBtn').onclick = verificarSenha;
+            document.getElementById('senhaInput').onkeypress = function(e) {
+                if (e.key === 'Enter') verificarSenha();
+            };
+            
+            // Menu hamburguer
+            document.getElementById('menuBtn').onclick = function() {
+                const menu = document.getElementById('menuAberto');
+                menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+            };
+            
+            // Fechar menu ao clicar fora
+            document.addEventListener('click', function(e) {
+                const menu = document.getElementById('menuAberto');
+                const menuBtn = document.getElementById('menuBtn');
+                
+                if (menu && menu.style.display === 'flex' && 
+                    !menu.contains(e.target) && 
+                    !menuBtn.contains(e.target)) {
+                    menu.style.display = 'none';
+                }
+            });
+            
+            // Opções do menu
+            document.getElementById('whatsappBtn').onclick = function() {
+                mostrarMensagem('📱 WhatsApp: 85 656 2554', '#27ae60');
+                document.getElementById('menuAberto').style.display = 'none';
+            };
+            
+            document.getElementById('emailBtn').onclick = function() {
+                window.location.href = 'mailto:inygujamo87@gmail.com?subject=Contato Site Lord Iny';
+                document.getElementById('menuAberto').style.display = 'none';
+            };
+            
+            document.getElementById('segredoBtn').onclick = function() {
+                document.getElementById('modalSegredo').style.display = 'flex';
+                document.getElementById('menuAberto').style.display = 'none';
+            };
+            
+            // Modal segredo
+            document.getElementById('verificarSegredoBtn').onclick = verificarSenhaSegredo;
+            document.getElementById('senhaSegredo').onkeypress = function(e) {
+                if (e.key === 'Enter') verificarSenhaSegredo();
+            };
+            
+            // Fechar modal ao clicar fora
+            document.getElementById('modalSegredo').onclick = function(e) {
+                if (e.target === this) fecharModalSegredo();
+            };
+            
+            // Fechar página secreta com ESC
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    if (document.getElementById('paginaSecreta').style.display === 'flex') {
+                        fecharPaginaSecreta();
+                    }
+                    fecharModalSegredo();
+                }
+            });
+        }
+        
+        function verificarSenha() {
+            const input = document.getElementById('senhaInput');
+            const senha = input.value.trim();
+            const senhaCorreta = "seniorlordiny";
+            const barra = document.getElementById('barraConfianca');
+            const nivel = document.getElementById('nivelConfianca');
+            
+            tentativasSenha++;
+            
+            // Calcular similaridade
+            let similaridade = 0;
+            for (let i = 0; i < Math.min(senha.length, senhaCorreta.length); i++) {
+                if (senha[i].toLowerCase() === senhaCorreta[i].toLowerCase()) {
+                    similaridade++;
+                }
+            }
+            
+            const confianca = Math.min((similaridade / senhaCorreta.length) * 100, 100);
+            
+            // Atualizar interface
+            barra.style.width = confianca + '%';
+            nivel.textContent = Math.round(confianca) + '%';
+            
+            if (confianca < 30) {
+                barra.style.background = '#e74c3c';
+                nivel.style.color = '#e74c3c';
+            } else if (confianca < 70) {
+                barra.style.background = '#f39c12';
+                nivel.style.color = '#f39c12';
+            } else {
+                barra.style.background = '#27ae60';
+                nivel.style.color = '#27ae60';
+            }
+            
+            // Verificar se está correta
+            if (senha.toLowerCase() === senhaCorreta.toLowerCase()) {
+                input.classList.remove('senha-incorreta');
+                input.classList.add('senha-correta');
+                barra.style.background = '#27ae60';
+                nivel.textContent = '100% - CORRETO!';
+                nivel.style.color = '#27ae60';
+                nivel.style.fontWeight = 'bold';
+                
+                mostrarMensagem('✅ Senha correta! Acessando...', '#27ae60');
+                senhaCorretaDigitada = true;
+                
+                setTimeout(() => {
+                    mostrarPagina(3);
+                }, 1000);
+            } else {
+                input.classList.remove('senha-correta');
+                input.classList.add('senha-incorreta');
+                mostrarMensagem('❌ Senha incorreta. Tente novamente.', '#e74c3c');
+                
+                // Limpar após algumas tentativas
+                if (tentativasSenha % 3 === 0) {
+                    setTimeout(() => {
+                        input.value = '';
+                    }, 500);
+                }
+            }
+        }
+        
+        function verificarSenhaSegredo() {
+            const senha = document.getElementById('senhaSegredo').value.trim();
+            const senhaCorreta = "camarada 4K";
+            
+            if (senha.toLowerCase() === senhaCorreta.toLowerCase()) {
+                fecharModalSegredo();
+                document.getElementById('paginaSecreta').style.display = 'flex';
+                document.getElementById('botaoNavegacao').style.display = 'none';
+                mostrarMensagem('🔓 Segredo revelado!', '#9b59b6');
+            } else {
+                mostrarMensagem('❌ Senha do segredo incorreta', '#e74c3c');
+                document.getElementById('senhaSegredo').value = '';
+            }
+        }
+        
+        function fecharModalSegredo() {
+            document.getElementById('modalSegredo').style.display = 'none';
+            document.getElementById('senhaSegredo').value = '';
+        }
+        
+        function fecharPaginaSecreta() {
+            document.getElementById('paginaSecreta').style.display = 'none';
+            document.getElementById('botaoNavegacao').style.display = 'flex';
+        }
+        
+        function mostrarMensagem(texto, cor) {
+            // Remover mensagem anterior
+            const anterior = document.querySelector('.mensagem-temporaria');
+            if (anterior) anterior.remove();
+            
+            // Criar nova mensagem
+            const mensagem = document.createElement('div');
+            mensagem.className = 'mensagem-temporaria';
+            mensagem.textContent = texto;
+            mensagem.style.background = cor;
+            mensagem.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
+            
+            document.body.appendChild(mensagem);
+            
+            // Remover após 3 segundos
+            setTimeout(() => {
+                if (mensagem.parentNode) {
+                    mensagem.style.animation = 'slideIn 0.3s ease reverse';
+                    setTimeout(() => {
+                        if (mensagem.parentNode) {
+                            mensagem.remove();
+                        }
+                    }, 300);
+                }
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
